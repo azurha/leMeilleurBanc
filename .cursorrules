@@ -1,0 +1,38 @@
+# Project: Le Meilleur Banc
+# Description: Application web pour trouver, noter et ajouter des bancs avec photos.
+# Stack: Elixir, Phoenix Framework, Phoenix LiveView, Ecto, PostgreSQL
+
+# General Guidelines
+- Follow Elixir and Phoenix conventions and best practices.
+- Use functional programming patterns.
+- Leverage pattern matching and guards effectively.
+- Follow the Elixir Style Guide (mix format).
+- Write clear, concise, and idiomatic Elixir code.
+
+# Phoenix Specific
+- Use Phoenix LiveView for interactive components where appropriate.
+- Adhere to the Phoenix directory structure (lib/, web/).
+- Use Ecto for database interactions. Define schemas clearly.
+- Implement changesets for data validation.
+- Handle errors gracefully in LiveViews and controllers.
+
+# Project Specific: Le Meilleur Banc
+- Database tables will include `bancs`, `photos`, `users`, `ratings`.
+- Bancs should have attributes like location (latitude, longitude), description, average_rating.
+- Photos should be associated with bancs.
+- Users can add bancs, upload photos, and submit ratings.
+- Ratings should be associated with users and bancs.
+- Implement authentication and authorization using (choisir ta lib, ex: `phx_gen_auth` ou `Pow`).
+- Consider how to handle geolocalisation for finding nearby benches.
+- Think about image uploads and storage (ex: S3, MinIO).
+
+# Testing
+- Write tests for new features (TDD approach encouraged). [20]
+- Use ExUnit for unit and integration tests.
+- Write tests that serve as documentation. [18]
+
+# AI Interaction Guidelines
+- When proposing code, always consider the existing project structure and conventions.
+- Prefer generating tests alongside code. [6, 13]
+- If unsure about Elixir/Phoenix specifics, ask for clarification or suggest looking at existing files.
+- Be mindful of performance in Elixir/Phoenix applications (e.g., N+1 queries with Ecto). [18]
