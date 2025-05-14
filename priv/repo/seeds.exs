@@ -4,13 +4,23 @@ alias LeMeilleurBanc.Listings.Bench
 # Supposant que vous avez un contexte Accounts pour les utilisateurs
 alias LeMeilleurBanc.Accounts.User
 
-# --- Création des utilisateurs (exemple) ---
-# ... (partie utilisateur inchangée) ...
-# IO.puts "Utilisateur user1@example.com existe déjà."
-# end
-#
-# # Pour cet exemple, nous allons supposer que l'utilisateur avec user_id: 1 existe.
-# # Vous devriez le créer ici ou vous assurer de son existence.
+# --- Création d'un utilisateur de test ---
+email_test = "benoit@example.com"
+password_test = "supersecret"
+
+case Repo.get_by(User, email: email_test) do
+  nil ->
+    case LeMeilleurBanc.Accounts.create_user(%{email: email_test, password: password_test}) do
+      {:ok, user} ->
+        IO.puts("Utilisateur de test #{user.email} créé avec ID: #{user.id}")
+
+      {:error, changeset} ->
+        IO.inspect(changeset.errors, label: "Erreur lors de la création de l'utilisateur de test")
+    end
+
+  user ->
+    IO.puts("Utilisateur de test #{user.email} existe déjà avec ID: #{user.id}")
+end
 
 IO.puts("Insertion des données de test (seeds)...")
 
@@ -80,7 +90,7 @@ IO.puts("Insertion des données de test (seeds)...")
   latitude: 45.9237,
   longitude: 6.8694,
   # Modifié
-  photo_url: "/benches/bench_5.jpg",
+  photo_url: "/benches/bench_5.png",
   uploader_comment: "Parfait après une bonne randonnée.",
   uploader_rating: 4,
   user_id: 1
@@ -94,7 +104,7 @@ IO.puts("Insertion des données de test (seeds)...")
   latitude: 44.5580,
   longitude: 4.7860,
   # Modifié (cycle)
-  photo_url: "/benches/bench_1.png",
+  photo_url: "/benches/bench_6.png",
   uploader_comment: "Bien utile pour une pause sur la route.",
   uploader_rating: 3,
   user_id: 1
@@ -108,7 +118,7 @@ IO.puts("Insertion des données de test (seeds)...")
   latitude: 49.0756,
   longitude: 1.5300,
   # Modifié (cycle)
-  photo_url: "/benches/bench_2.png",
+  photo_url: "/benches/bench_7.png",
   uploader_comment: "Ambiance charmante et paisible.",
   uploader_rating: 5,
   user_id: 1
@@ -122,7 +132,7 @@ IO.puts("Insertion des données de test (seeds)...")
   latitude: 48.4047,
   longitude: 2.6960,
   # Modifié (cycle)
-  photo_url: "/benches/bench_3.png",
+  photo_url: "/benches/bench_8.png",
   uploader_comment: "Pour les amoureux de la nature.",
   uploader_rating: 4,
   user_id: 1
@@ -136,7 +146,7 @@ IO.puts("Insertion des données de test (seeds)...")
   latitude: 48.8729,
   longitude: 2.3825,
   # Modifié (cycle)
-  photo_url: "/benches/bench_4.png",
+  photo_url: "/benches/bench_9.png",
   uploader_comment: "Superbe vue sur la ville !",
   uploader_rating: 5,
   user_id: 1
