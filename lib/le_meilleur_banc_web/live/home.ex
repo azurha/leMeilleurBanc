@@ -2,6 +2,7 @@ defmodule LeMeilleurBancWeb.Home do
   use LeMeilleurBancWeb, :live_view
 
   alias LeMeilleurBanc.Listings
+  alias LeMeilleurBancWeb.CustomComponents
 
   def mount(_params, _session, socket) do
     socket = assign(socket, :listings, Listings.list_benches())
@@ -25,6 +26,11 @@ defmodule LeMeilleurBancWeb.Home do
     """
   end
 
+  attr :photo_url, :string, required: true
+  attr :name, :string, required: true
+  attr :uploader_comment, :string, required: true
+  attr :uploader_rating, :float, required: true
+
   def bench_card(assigns) do
     ~H"""
     <div class="max-w-md mx-auto bg-orange-50 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
@@ -36,31 +42,11 @@ defmodule LeMeilleurBancWeb.Home do
           <h2 class="block mt-1 text-2xl leading-tight font-bold text-black">{@name}</h2>
           <p class="mt-2 text-slate-600 text-sm">{@uploader_comment}</p>
           <div class="mt-4 flex justify-between items-center">
-            <.rating rating={@uploader_rating} />
+            <CustomComponents.rating rating={@uploader_rating} />
             <p class="text-slate-500 text-sm">À environ 200 m</p>
           </div>
         </div>
       </div>
-    </div>
-    """
-  end
-
-  def rating(assigns) do
-    rating_value = assigns.rating
-
-    formatted_rating =
-      if rating_value == trunc(rating_value) do
-        trunc(rating_value)
-      else
-        rating_value
-      end
-
-    assigns = assign(assigns, :display_rating, formatted_rating)
-
-    ~H"""
-    <div class="text-sm text-gray-700">
-      <span class="font-semibold">Note :</span>
-      <span>{@display_rating} / 5</span>
     </div>
     """
   end
