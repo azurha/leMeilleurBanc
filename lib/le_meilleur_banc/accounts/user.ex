@@ -7,11 +7,14 @@ defmodule LeMeilleurBanc.Accounts.User do
   schema "users" do
     field(:email, :string)
     field(:hashed_password, :string)
+    field(:status, :string)
     # Champ virtuel pour le mot de passe en clair
     field(:password, :string, virtual: true)
 
     timestamps(type: :utc_datetime)
   end
+
+  @user_statuses ~w(verified pending admin)
 
   @doc """
   A user changeset for registration.
@@ -21,9 +24,10 @@ defmodule LeMeilleurBanc.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :status])
     |> validate_email()
     |> validate_password()
+    |> validate_status()
     |> unique_constraint(:email)
   end
 
@@ -41,6 +45,10 @@ defmodule LeMeilleurBanc.Accounts.User do
     |> validate_length(:password, min: 8, max: 72)
 
     # Vous pouvez ajouter d'autres validations de mot de passe ici (ex: confirmation)
+  end
+
+  defp validate_status(changeset) do
+    validate_inclusion(changeset, :status, @user_statuses)
   end
 
   @doc """
@@ -61,8 +69,9 @@ defmodule LeMeilleurBanc.Accounts.User do
     # sauf si c'est géré avec une logique spécifique (ex: changement de mot de passe admin)
     user
     # Uniquement l'email pour cet exemple de changeset de base
-    |> cast(attrs, [:email])
+    |> cast(attrs, [:email, :status])
     |> validate_required([:email])
+    |> validate_status()
     |> unique_constraint(:email)
   end
 

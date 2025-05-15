@@ -10,9 +10,15 @@ password_test = "supersecret"
 
 case Repo.get_by(User, email: email_test) do
   nil ->
-    case LeMeilleurBanc.Accounts.create_user(%{email: email_test, password: password_test}) do
+    case LeMeilleurBanc.Accounts.create_user(%{
+           email: email_test,
+           password: password_test,
+           status: "admin"
+         }) do
       {:ok, user} ->
-        IO.puts("Utilisateur de test #{user.email} créé avec ID: #{user.id}")
+        IO.puts(
+          "Utilisateur de test #{user.email} créé avec ID: #{user.id} et statut: #{user.status}"
+        )
 
       {:error, changeset} ->
         IO.inspect(changeset.errors, label: "Erreur lors de la création de l'utilisateur de test")

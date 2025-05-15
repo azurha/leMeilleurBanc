@@ -5,7 +5,7 @@ defmodule LeMeilleurBancWeb.Home do
   alias LeMeilleurBancWeb.CustomComponents
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, :listings, Listings.list_benches())
+    socket = stream(socket, :listings, Listings.list_benches())
     {:ok, socket}
   end
 
@@ -13,13 +13,14 @@ defmodule LeMeilleurBancWeb.Home do
     ~H"""
     <div class="min-h-screen p-4 md:p-8">
       <h1 class="text-4xl font-bold text-stone-800 mb-6 text-center md:text-left">Liste des bancs</h1>
-      <div class="space-y-6">
+      <div class="space-y-6" id="listings" phx-update="stream">
         <.bench_card
-          :for={bench <- @listings}
+          :for={{dom_id, bench} <- @streams.listings}
           photo_url={bench.photo_url}
           name={bench.name}
           uploader_comment={bench.uploader_comment}
           uploader_rating={bench.uploader_rating}
+          id={dom_id}
         />
       </div>
     </div>
@@ -30,10 +31,14 @@ defmodule LeMeilleurBancWeb.Home do
   attr :name, :string, required: true
   attr :uploader_comment, :string, required: true
   attr :uploader_rating, :float, required: true
+  attr :id, :string, required: true
 
   def bench_card(assigns) do
     ~H"""
-    <div class="max-w-md mx-auto bg-orange-50 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+    <div
+      id={@id}
+      class="max-w-md mx-auto bg-orange-50 rounded-xl shadow-md overflow-hidden md:max-w-2xl"
+    >
       <div class="md:flex">
         <div class="md:shrink-0">
           <img class="h-48 w-full object-cover md:h-full md:w-48" src={@photo_url} alt={@name} />
