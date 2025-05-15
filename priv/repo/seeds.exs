@@ -6,7 +6,7 @@ alias LeMeilleurBanc.Accounts.User
 
 # --- Création d'un utilisateur de test ---
 email_test = "benoit@example.com"
-password_test = "supersecret"
+password_test = "supersecret123"
 
 case Repo.get_by(User, email: email_test) do
   nil ->
