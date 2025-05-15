@@ -9,7 +9,7 @@ defmodule LeMeilleurBanc.Repo.Migrations.CreateBenches do
       add :longitude, :float
       add :photo_url, :string
       add :uploader_comment, :text
-      add :uploader_rating, :integer
+      add :uploader_rating, :float
       add :status, :string
       add :user_id, references(:users, on_delete: :nothing)
 
